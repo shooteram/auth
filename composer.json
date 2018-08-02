@@ -1,19 +1,19 @@
 {
-    "name": "shooteram/auth",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "shooteram\\Auth\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "shooteram\\Auth\\ServiceProvider"
-            ]
-        }
-    },
-    "require": {
-        "laravel/passport": "^6.0"
+  "name": "shooteram/auth",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "shooteram\\Auth\\": "src/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "shooteram\\Auth\\ServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "laravel/passport": "^6.0"
+  }
 }
