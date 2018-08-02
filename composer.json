@@ -1,0 +1,16 @@
+{
+    "name": "shooteram/auth",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "shooteram\\Auth\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "shooteram\\Auth\\ServiceProvider"
+            ]
+        }
+    }
+}
