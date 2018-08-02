@@ -12,5 +12,8 @@
                 "shooteram\\Auth\\ServiceProvider"
             ]
         }
+    },
+    "require": {
+        "laravel/passport": "^6.0"
     }
 }
