@@ -11,5 +11,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
      * @return void
      */
     public function boot() {
+    private function preflight(string $method): array
+    {
+        return [$method, 'options'];
+    }
     }
 }
