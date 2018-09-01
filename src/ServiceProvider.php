@@ -15,5 +15,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
     {
         return [$method, 'options'];
     }
+    private function getThrottle(): string
+    {
+        $throttle = config('cors.throttle');
+
+        $rate_limit = $throttle['rate_limit'];
+        $retry_after = $throttle['retry_after'];
+
+        return "throttle:$rate_limit,$retry_after";
     }
 }
