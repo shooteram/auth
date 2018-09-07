@@ -16,6 +16,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
             __DIR__.'/../config/cors.php' => config_path('cors.php')
         ], 'config');
 
+        $this->mergeConfigFrom(__DIR__.'/../config/cors.php', 'cors');
+
         $this->defineRoutes();
     }
 
