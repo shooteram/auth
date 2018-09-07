@@ -61,8 +61,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
     {
         $throttle = config('cors.throttle');
 
-        $rate_limit = $throttle['rate_limit'];
-        $retry_after = $throttle['retry_after'];
+        $rate_limit = $throttle->rate_limit;
+        $retry_after = $throttle->retry_after;
 
         return "throttle:$rate_limit,$retry_after";
     }

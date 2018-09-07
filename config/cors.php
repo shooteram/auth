@@ -10,7 +10,7 @@ return [
         'Accept',
     ],
 
-    'throttle' => [
+    'throttle' => (object) [
         'rate_limit' => 10,
         'retry_after' => 1, // expressed in minutes
     ],
