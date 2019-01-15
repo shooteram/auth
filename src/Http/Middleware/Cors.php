@@ -3,6 +3,7 @@
 namespace shooteram\Auth\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 
 class Cors
 {
@@ -13,45 +14,56 @@ class Cors
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         $origin = $request->headers->get('Origin');
 
-        if (! $origin)
-            return response('Requests to this endpoint requires an "Origin" header.', 403);
+        if (!$origin) {
+            $message = "Requests to this endpoint requires an \"Origin\" header.";
 
-        if (! $this->originIsAllowed($origin))
-            return response('This domain origin is not whitelisted to perform CORS requests to this server.', 403);
+            return response($message, 403);
+        }
 
-        $headers = collect([
+        if (!$this->originIsAllowed($origin)) {
+            $message = "This domain origin is not whitelisted to perform CORS requests to
+                this server.";
+
+            return response($message, 403);
+        }
+
+        $headers = [
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Allow-Headers' => $this->getHeaders(),
             'Access-Control-Allow-Origin' => $this->getOrigin($origin),
-            'Access-Control-Allow-Methods' => 'GET, POST, PUT, DELETE, OPTIONS',
-        ]);
+            'Access-Control-Allow-Methods' => $this->getAllowedMethods(),
+        ];
 
-        if ($request->method() === 'OPTIONS')
+        if ($request->method() === 'OPTIONS') {
             return response(null, 200)->withHeaders($headers);
+        }
 
         return $next($request)->withHeaders($headers);
     }
 
-    private function originIsAllowed($origin): bool
+    private function originIsAllowed(string $origin) : bool
     {
-        return $this->getOrigin($origin) ===  false ? false : true;
+        return $this->getOrigin($origin) === false ? false : true;
     }
 
-    private function getOrigin($origin)
+    private function getOrigin(string $origin)
     {
-        $whiteListedOrigins = collect(
-            config('cors.allowed-origins')
-        );
+        $whiteListedOrigins = collect(config('cors.allowed-origins'));
 
-        return ! $whiteListedOrigins->contains($origin) ? false : $origin;
+        return !$whiteListedOrigins->contains($origin) ? false : $origin;
     }
 
-    private function getHeaders(): string
+    private function getHeaders() : string
     {
         return implode(', ', config('cors.allowed-headers'));
+    }
+
+    private function getAllowedMethods() : string
+    {
+        return implode(', ', config('cors.allowed-methods'));
     }
 }

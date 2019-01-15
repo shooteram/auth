@@ -21,12 +21,13 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only(config('cors.validation.login-credentials'));
+        $credentials = $request->only(array_keys(config('cors.validation.login')));
 
         $validator = Validator::make($credentials, config('cors.validation.login'));
 
-        if ($validator->fails())
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 400);
+        }
 
         return Auth::attempt($credentials)
             ? response()->json(Auth::user(), 200)

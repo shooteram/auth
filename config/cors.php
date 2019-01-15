@@ -10,14 +10,17 @@ return [
         'Accept',
     ],
 
-    'throttle' => (object) [
-        'rate_limit' => 10,
-        'retry_after' => 1, // expressed in minutes
+    'allowed-methods' => [
+        'GET',
+    ],
+
+    // These integers are expressed in minutes.
+    'throttle' => (object)[
+        'rate_limit' => 20,
+        'retry_after' => 2,
     ],
 
     'validation' => [
-        'login-credentials' => ['email', 'password'],
-
         'login' => [
             'email' => 'bail|required|email|exists:users|max:255',
             'password' => 'bail|required',

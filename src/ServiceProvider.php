@@ -5,18 +5,20 @@ namespace shooteram\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider {
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
+{
     /**
      * Bootstrap the application services.
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->publishes([
-            __DIR__.'/../config/cors.php' => config_path('cors.php')
+            __DIR__ . '/../config/cors.php' => config_path('cors.php')
         ], 'config');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/cors.php', 'cors');
+        $this->mergeConfigFrom(__DIR__ . '/../config/cors.php', 'cors');
 
         $this->defineRoutes();
     }
@@ -52,18 +54,22 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider {
         })->middleware($middlewares->merge(['auth'])->all());
     }
 
-    private function preflight(string $method): array
+    private function preflight(string $method) : array
     {
         return [$method, 'options'];
     }
 
-    private function getThrottle(): string
+    private function getThrottle() : string
     {
-        $throttle = config('cors.throttle');
+        $throttle = config(
+            'cors.throttle',
+            (object)['rate_limit' => 10, 'retry_after' => 1]
+        );
 
-        $rate_limit = $throttle->rate_limit;
-        $retry_after = $throttle->retry_after;
-
-        return "throttle:$rate_limit,$retry_after";
+        return sprintf(
+            "throttle:%d,%d",
+            $throttle->rate_limit,
+            $throttle->retry_after
+        );
     }
 }
