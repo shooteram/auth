@@ -33,6 +33,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $namespace = '\shooteram\Auth\Http\Controllers';
 
+        Route::match($this->preflight('get'), 'home', "$namespace\HomeController@home")->name('home');
         Route::match($this->preflight('get'), 'csrf', "$namespace\DefaultController@getCsrfToken")
             ->middleware($middlewares->all());
 
@@ -44,6 +45,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         Route::group($options, function () use ($middlewares) {
             Route::match($this->preflight('post'), 'login', 'LoginController@login');
+            Route::match($this->preflight('get'), 'login', 'LoginController@display')->name('login');
             Route::match($this->preflight('post'), 'register', 'RegisterController@register');
             Route::match($this->preflight('post'), 'logout', 'LogoutController@logout')
                 ->middleware($middlewares->merge(['auth'])->all());
@@ -54,12 +56,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         })->middleware($middlewares->merge(['auth'])->all());
     }
 
-    private function preflight(string $method) : array
+    private function preflight(string $method): array
     {
         return [$method, 'options'];
     }
 
-    private function getThrottle() : string
+    private function getThrottle(): string
     {
         $throttle = config(
             'cors.throttle',

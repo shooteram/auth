@@ -33,4 +33,9 @@ class LoginController extends Controller
             ? response()->json(Auth::user(), 200)
             : response()->json(['error' => 'These credentials do not match our records.'], 400);
     }
+
+    public function display()
+    {
+        return response()->json(['message' => 'Send a POST request to this route to log in.']);
+    }
 }

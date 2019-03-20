@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class RegisterController extends Controller {
+class RegisterController extends Controller
+{
     /**
      * Create a new controller instance.
      *
@@ -32,7 +33,7 @@ class RegisterController extends Controller {
         $only = array_keys($validation_rules);
 
         $fields = collect($request->only($only))
-            ->merge(['password' => Hash::make($request->password) ]);
+            ->merge(['password' => Hash::make($request->password)]);
 
         $user = new $user_class;
         $user->fill($fields->all());
