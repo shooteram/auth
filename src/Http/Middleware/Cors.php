@@ -54,6 +54,12 @@ class Cors
     {
         $whiteListedOrigins = collect(config('cors.allowed-origins'));
 
+        if (env('CORS_ALLOWED_ORIGINS')) {
+            $allowedOriginsFromEnv = explode(',', env('CORS_ALLOWED_ORIGINS'));
+
+            $whiteListedOrigins = $whiteListedOrigins->merge($allowedOriginsFromEnv);
+        }
+
         return !$whiteListedOrigins->contains($origin) ? false : $origin;
     }
 
