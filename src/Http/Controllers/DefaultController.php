@@ -2,10 +2,7 @@
 
 namespace shooteram\Auth\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-
-class DefaultController extends Controller
+class DefaultController
 {
     public function getCsrfToken()
     {

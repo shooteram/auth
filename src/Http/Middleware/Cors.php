@@ -60,7 +60,7 @@ class Cors
             $whiteListedOrigins = $whiteListedOrigins->merge($allowedOriginsFromEnv);
         }
 
-        return !$whiteListedOrigins->contains($origin) ? false : $origin;
+        return ! $whiteListedOrigins->contains($origin) ? false : $origin;
     }
 
     private function getHeaders() : string
