@@ -34,4 +34,10 @@ return [
 
         'password-reset' => [],
     ],
+
+    'auth' => [
+        'login' => [
+            'username' => 'email',
+        ],
+    ],
 ];
