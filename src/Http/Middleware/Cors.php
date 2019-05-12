@@ -25,10 +25,15 @@ class Cors
         }
 
         if (!$this->originIsAllowed($origin)) {
-            $message = "This domain origin is not whitelisted to perform CORS requests to
-                this server.";
+            $message = ["message" => "This domain origin is not whitelisted to perform CORS requests to this server."];
 
-            return response($message, 403);
+            if (env('APP_DEBUG')) {
+                $message['requested_origin'] = $origin;
+                $message['available_ones'] = $this->getOrigins();
+                $message['info'] = "You're seeing these informations because your app is in debug mode.";
+            }
+
+            return response()->json($message, 403);
         }
 
         $headers = [
@@ -52,15 +57,20 @@ class Cors
 
     private function getOrigin(string $origin)
     {
-        $whiteListedOrigins = collect(config('cors.allowed-origins'));
+        $origins = collect($this->getOrigins());
+
+        return ! $origins->contains($origin) ? false : $origin;
+    }
+
+    protected function getOrigins(): array
+    {
+        $origins = config('cors.allowed-origins', []);
 
         if (env('CORS_ALLOWED_ORIGINS')) {
-            $allowedOriginsFromEnv = explode(',', env('CORS_ALLOWED_ORIGINS'));
-
-            $whiteListedOrigins = $whiteListedOrigins->merge($allowedOriginsFromEnv);
+            $origins = array_merge($origins, explode(',', env('CORS_ALLOWED_ORIGINS')));
         }
 
-        return ! $whiteListedOrigins->contains($origin) ? false : $origin;
+        return $origins;
     }
 
     private function getHeaders() : string
